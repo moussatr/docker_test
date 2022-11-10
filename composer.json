@@ -1,0 +1,11 @@
+{
+    "require": {
+        "symfony/orm-pack": "^2.2",
+        "symfony/runtime": "^6.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    }
+}
