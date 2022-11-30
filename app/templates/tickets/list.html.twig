@@ -18,10 +18,20 @@
                     <td>{{ ticket.label }}</td>
                     <td>
                         <a href="{{ path('tickets_show', {ticketId: ticket.id}) }}">Voir</a>
+                        <a href="{{ path('tickets_list', {}) }}">Voir</a>
+                        <a href="/tickets/new">Ajouter</a>
+                        <a href="{{ path('tickets_edit', {ticketId: ticket.id}) }}">Editer</a>
+                        <a href="{{ path('tickets_delete', {'ticketId': ticket.id}) }}" onclick="confirm('Voulez vous vraiment supprimer');"> Supprimer</a>
+                      
+
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    
     <a href="" class="btn btn-success">Test</a>
+    
+   
+
 {% endblock %}
