@@ -45,10 +45,11 @@ class TicketController extends AbstractController
 
             return $this->redirectToRoute('tickets_list');
         }
-
         return $this->renderForm('tickets/new.html.twig', [
             'form' => $form,
         ]);
+
+    
     }
 
     #[Route('/delete/{ticketId}', name: "tickets_delete")]
@@ -60,7 +61,9 @@ class TicketController extends AbstractController
         $entityManager->remove($ticket);
         $entityManager->flush();
         return $this->redirectToRoute('tickets_list');
+      
     }
+    
     #[Route('/edit/{ticketId}', name: "tickets_edit")]
     public function edit(ManagerRegistry $doctrine, int $ticketId):Response
     {
@@ -81,6 +84,10 @@ class TicketController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('tickets_list');
+        return $this->renderForm('tickets/new.html.twig', [
+            'form' => $form,
+        ]);
+
     }
 
     #[Route('/{ticketId}', name: "tickets_show")]
