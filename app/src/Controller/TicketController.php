@@ -6,21 +6,23 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
 
 use App\Form\TicketType;
 
 use App\Entity\Ticket;
-
+#[IsGranted('ROLE_USER')]
 #[Route('/tickets')]
 class TicketController extends AbstractController
 {
 
+     
     #[Route('/', name: "tickets_list")]
-    public function list(ManagerRegistry $doctrine): Response
+    public function list(EntityManagerInterface $em): Response
     {
-        $tickets = $doctrine->getRepository(Ticket::class)->findAll();
+        $tickets = $em->getRepository(Ticket::class)->findAll();
         // dd($tickets);
 
         return $this->render('tickets/list.html.twig', [
@@ -28,28 +30,32 @@ class TicketController extends AbstractController
         ]);
     }
     #[Route('/new', name: "tickets_new")]
-    public function new(ManagerRegistry $doctrine, Request $request): Response{
+    public function new (Request $request, EntityManagerInterface $em): Response
+    {
         $ticket = new Ticket();
+
         $form = $this->createForm(TicketType::class, $ticket);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-  
-            // but, the original `$task` variable has also been updated
+            
             $ticket = $form->getData();
+            $ticket->setUser($this->getUser());
 
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($ticket);
-            $entityManager->flush();
+            $em->persist($ticket);
+            $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Ticket bien créé !'
+            );
+            
             return $this->redirectToRoute('tickets_list');
         }
+    
         return $this->renderForm('tickets/new.html.twig', [
             'form' => $form,
         ]);
-
-    
     }
 
     #[Route('/delete/{ticketId}', name: "tickets_delete")]

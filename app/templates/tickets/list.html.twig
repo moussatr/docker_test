@@ -19,11 +19,11 @@
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.label }}</td>
                     <td>
-                        <a href="{{ path('tickets_show', {ticketId: ticket.id}) }}">Voir</a>
+                        <a href="{{ path('tickets_show', {ticketId: ticket.id}) }}" class="btn btn-success">Voir</a>
 
-                        <a href="/tickets/new">Ajouter</a>
-                        <a href="{{ path('tickets_edit', {ticketId: ticket.id}) }}">Editer</a>
-                        <a href="{{ path('tickets_delete', {'ticketId': ticket.id}) }}" onclick="confirm('Voulez vous vraiment supprimer')" class = "text-danger"> Supprimer</a>
+                        <a href="/tickets/new" class="btn btn-success">Ajouter</a>
+                        <a href="{{ path('tickets_edit', {ticketId: ticket.id}) }}" class="btn btn-success">Editer</a>
+                        <a href="{{ path('tickets_delete', {'ticketId': ticket.id}) }}" onclick="confirm('Voulez vous vraiment supprimer')" class = "text-danger" class="btn btn-success"> Supprimer</a>
                       
 
                     </td>
