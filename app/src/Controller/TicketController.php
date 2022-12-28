@@ -50,6 +50,7 @@ class TicketController extends AbstractController
                 'Ticket bien créé !'
             );
             
+            
             return $this->redirectToRoute('tickets_list');
         }
     
@@ -57,6 +58,42 @@ class TicketController extends AbstractController
             'form' => $form,
         ]);
     }
+    #[Route('/{ticketId}/edit', name: "tickets_edit")]
+   
+    public function edit (Ticket $ticket, Request $request, EntityManagerInterface $em): Response
+    {
+        
+
+        $form = $this->createForm(TicketType::class, $ticket);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            if ($ticket->getUser() == $this->getUser()) {
+                $ticket = $form->getData();
+                $em->persist($ticket);
+                $em->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Ticket bien mise à jour !'
+                );
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'Vous n\'avez pas les droits pour cette action !'
+                );
+            }
+            
+            return $this->redirectToRoute('tickets_list');
+        }
+    
+        return $this->renderForm('tickets/edit.html.twig', [
+            'form' => $form,
+            'ticket' => $ticket
+        ]);
+    }
+    
 
     #[Route('/delete/{ticketId}', name: "tickets_delete")]
     public function delete(ManagerRegistry $doctrine, int $ticketId):Response
@@ -68,33 +105,7 @@ class TicketController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('tickets_list');
       
-    }
-    
-    #[Route('/edit/{ticketId}', name: "tickets_edit")]
-    public function edit(ManagerRegistry $doctrine, int $ticketId):Response
-    {
-        $ticket = $doctrine->getRepository(Ticket::class)->find($ticketId);
-
-        $entityManager = $doctrine->getManager();
-       
-
-        if (!$ticket) {
-            throw $this->createNotFoundException(
-                'No product found for id '.$ticketId
-            );
-        }
-
-        $ticket->getLabel('edit');
-        
-        
-        $entityManager->flush();
-
-        return $this->redirectToRoute('tickets_list');
-        return $this->renderForm('tickets/new.html.twig', [
-            'form' => $form,
-        ]);
-
-    }
+    } 
 
     #[Route('/{ticketId}', name: "tickets_show")]
     public function show(?int $ticketId, ManagerRegistry $doctrine): Response

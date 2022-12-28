@@ -4,13 +4,16 @@
 {% block title %}Liste des tickets{% endblock %}
 
 {% block body %}
-    
+    <div class="mb-4 mt-4">
+        <a href="{{ path('tickets_new') }}" class="btn btn-success">Ajouter un ticket</a>
+    </div>
     <table class="table table-striped table-hover">
         <thead>
             <tr class="table-dark">
-                <th scope="col">#</th>
+                 <th scope="col" width="1%">#</th>
                 <th scope="col">Label</th>
-                <th scope="col">Actions</th>
+                <th scope="col">User</th>
+                <th scope="col" width="20%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -18,22 +21,19 @@
                 <tr>
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.label }}</td>
+                    <td>{{ ticket.user.getEmail }}</td>
+
                     <td>
-                        <a href="{{ path('tickets_show', {ticketId: ticket.id}) }}" class="btn btn-success">Voir</a>
-
-                        <a href="/tickets/new" class="btn btn-success">Ajouter</a>
-                        <a href="{{ path('tickets_edit', {ticketId: ticket.id}) }}" class="btn btn-success">Editer</a>
-                        <a href="{{ path('tickets_delete', {'ticketId': ticket.id}) }}" onclick="confirm('Voulez vous vraiment supprimer')" class = "text-danger" class="btn btn-success"> Supprimer</a>
-                      
-
+                         <a href="{{ path('tickets_show', {ticketId: ticket.id}) }}" >Voir</a>
+                        <a href="{{ path('tickets_edit', {ticketId: ticket.id}) }}" >Editer</a>
+                        <a href="{{ path('tickets_delete', {ticketId: ticket.id}) }}" onclick="confirm('Voulez vous vraiment supprimer')" class = "text-danger" > Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     
-    <a href="" class="btn btn-success">Test</a>
-    
+   
    
 
 {% endblock %}

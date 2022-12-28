@@ -4,5 +4,9 @@
 {% block title %}Editer le ticket{% endblock %}
 {# templates/task/new.html.twig #}
 {% block body %}
+
+
+  <h1>Modifier un ticket</h1>
 {{ form(form) }}
+<a href="{{ path('tickets_list') }}" class="btn btn-light">Retour</a>
 {% endblock %}
